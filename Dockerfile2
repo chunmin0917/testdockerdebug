@@ -1,0 +1,5 @@
+FROM openjdk:12-alpine
+COPY src/HelloWorld.java /tmp/
+WORKDIR /tmp
+RUN javac HelloWorld.java
+ENTRYPOINT ["java","HelloWorld"]
