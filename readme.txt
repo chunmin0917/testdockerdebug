@@ -1,0 +1,1 @@
+it is used to test docker build in aliyun ACR
