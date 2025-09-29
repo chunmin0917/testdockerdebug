@@ -1,3 +1,4 @@
+# used by github actions and aliyun ACR
 FROM openjdk:12-alpine
 COPY src/HelloWorld.java /tmp/
 WORKDIR /tmp
