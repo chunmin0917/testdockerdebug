@@ -1,5 +1,9 @@
 name: Docker Image CI
 
+permissions:  
+  contents: read  
+  packages: write
+  
 on:
   push:
     branches: [ "master" ]
@@ -7,12 +11,16 @@ on:
     branches: [ "master" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile2 --tag my-image-name:$(date +%s)
+      run: |
+        IMAGE_TAG=$(date +%s)
+        docker build . --file Dockerfile2 --tag ghcr.io/chunmin0917/my-image-name:${IMAGE_TAG}
+        echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
+    - name: Login to GitHub Container Registry
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+    - name: Push Docker image to GHCR
+      run: docker push ghcr.io/chunmin0917/my-image-name:${IMAGE_TAG}
